@@ -30,3 +30,9 @@
 .ocultar{
     display: none;
 }
+
+#gracias-mensaje{
+    position: absolute;
+    font-size: 20px;
+    top: 50%;
+}

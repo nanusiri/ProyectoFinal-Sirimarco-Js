@@ -58,12 +58,26 @@ function renderizarProductos(arrayProductos) {
         <p>Precio: $${precio}</p>
         <p class=stock>Quedan <span id=span${id}>${stock}</span> unidades</p>
         <button id=${id}>AREGAR AL CARRITO</button>
+        <br><br>
+        <button class="comprar-ya" id="comprar-ya-${id}">COMPRAR YA</button>
         `
     
         contenedor.append(tarjetaProducto)
 
         let boton = document.getElementById(id)
         boton.addEventListener("click", agregarProductoAlCarrito)
+
+        let botonComprarYa = document.getElementById(`comprar-ya-${id}`)
+        botonComprarYa.addEventListener("click", () => {
+            let graciasMensaje = document.createElement("div")
+            graciasMensaje.id = "gracias-mensaje"
+            graciasMensaje.textContent = "¡Gracias por su compra!"
+            document.body.appendChild(graciasMensaje)
+
+            setTimeout(function() {
+            graciasMensaje.parentNode.removeChild(graciasMensaje)
+            }, 3000)
+        })
     })
 }
 
