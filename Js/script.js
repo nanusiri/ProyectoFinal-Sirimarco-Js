@@ -54,8 +54,8 @@ function renderizarProductos(arrayProductos) {
 
         tarjetaProducto.innerHTML = `
         <h3 class=tituloProducto>${nombre}</h3>
-        <p>Precio: $${precio}</p>
         <img src=${img}>
+        <p>Precio: $${precio}</p>
         <p class=stock>Quedan <span id=span${id}>${stock}</span> unidades</p>
         <button id=${id}>AREGAR AL CARRITO</button>
         `
@@ -100,13 +100,34 @@ function agregarProductoAlCarrito(e) {
 
 function renderizarCarrito(arrayDeProductos) {
     carritoDOM.innerHTML = ""
-    arrayDeProductos.forEach(({nombre, precio, unidades, subtotal}) => {
-        carritoDOM.innerHTML += `<h3>${nombre} ${precio} ${unidades} ${subtotal}</h3>`
-    })
-    carritoDOM.innerHTML += `<button id="comprar">Comprar carrito</button>`
+    
+    if (arrayDeProductos.length === 0) {
+        carritoDOM.innerHTML = "<p>El carrito está vacío</p>"
+        document.getElementById("comprar").style.display = "none"
+    } else {
+        arrayDeProductos.forEach(({nombre, precio, id, unidades, subtotal}) => {
+            carritoDOM.innerHTML += `
+            <div>
+                <h3>${nombre} ${precio} ${unidades} ${subtotal}</h3>
+                <button class="eliminar-producto" data-id="${id}">Eliminar</button>
+            </div>
+        `
+        })
+        carritoDOM.innerHTML += `<button id="comprar">Comprar carrito</button>`
 
-    let botonComprar = document.getElementById("comprar")
-    botonComprar.addEventListener("click", finalizarCompra)
+        let botonComprar = document.getElementById("comprar")
+        botonComprar.addEventListener("click", finalizarCompra)
+
+        let botonesEliminar = document.querySelectorAll(".eliminar-producto")
+        botonesEliminar.forEach(boton => boton.addEventListener("click", eliminarProducto))
+    }
+}
+function eliminarProducto(e) {
+    let idProducto = Number(e.target.dataset.id)
+    let pos = carrito.findIndex(producto => producto.id === idProducto)
+    carrito.splice(pos, 1)
+    localStorage.setItem("carrito", JSON.stringify(carrito))
+    renderizarCarrito(carrito)
 }
 
 let buscador = document.getElementById("buscador")
