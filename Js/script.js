@@ -32,10 +32,16 @@ let productos = [
 let carritoDOM = document.getElementById("carrito")
 
 function finalizarCompra(){
-    alert("Muchas gracias por su compra")
+    let mensajeCompra = document.createElement("h3")
+    mensajeCompra.textContent = "¡Muchas gracias por su compra!"
+    document.getElementById("mensajeCompra").appendChild(mensajeCompra)
     localStorage.removeItem("carrito") 
     carrito = []
     renderizarCarrito(carrito)
+
+    setTimeout(() => {
+        mensajeCompra.remove()
+    }, 3000)
 }
 
 let carrito = JSON.parse(localStorage.getItem("carrito")) || []
@@ -69,10 +75,9 @@ function renderizarProductos(arrayProductos) {
 
         let botonComprarYa = document.getElementById(`comprar-ya-${id}`)
         botonComprarYa.addEventListener("click", () => {
-            let graciasMensaje = document.createElement("div")
-            graciasMensaje.id = "gracias-mensaje"
+            let graciasMensaje = document.createElement("h3")
             graciasMensaje.textContent = "¡Gracias por su compra!"
-            document.body.appendChild(graciasMensaje)
+            document.getElementById("agradecimiento").appendChild(graciasMensaje)
 
             setTimeout(function() {
             graciasMensaje.parentNode.removeChild(graciasMensaje)
@@ -116,18 +121,29 @@ function renderizarCarrito(arrayDeProductos) {
     carritoDOM.innerHTML = ""
     
     if (arrayDeProductos.length === 0) {
-        carritoDOM.innerHTML = "<p>El carrito está vacío</p>"
-        document.getElementById("comprar").style.display = "none"
+        carritoDOM.innerHTML = "<p class=mensajeCarrito>Ups! El carrito está vacío</p>"
+        
     } else {
         arrayDeProductos.forEach(({nombre, precio, id, unidades, subtotal}) => {
             carritoDOM.innerHTML += `
             <div>
-                <h3>${nombre} ${precio} ${unidades} ${subtotal}</h3>
-                <button class="eliminar-producto" data-id="${id}">Eliminar</button>
+                <p class=contenido>${nombre} Precio: $${precio} Unidades: ${unidades} Subtotal: $${subtotal}</p>
+                <button class="eliminar-producto" data-id="${id}">Eliminar producto</button>
             </div>
         `
         })
-        carritoDOM.innerHTML += `<button id="comprar">Comprar carrito</button>`
+        function calcularTotal(arrayDeProductos){
+            let total = 0
+            for(let i = 0; i< arrayDeProductos.length; i++){
+                total += arrayDeProductos[i].subtotal
+            }
+            return total
+        }
+        let totalAPagar = calcularTotal(arrayDeProductos)
+        carritoDOM.innerHTML += `
+        <h3 class=total>TOTAL A PAGAR: $${totalAPagar}</h3>
+        <button id="comprar">Comprar carrito</button>
+        `
 
         let botonComprar = document.getElementById("comprar")
         botonComprar.addEventListener("click", finalizarCompra)
