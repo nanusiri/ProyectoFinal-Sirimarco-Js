@@ -29,25 +29,49 @@ let productos = [
     }
 ]
 
+let login = document.getElementById("login")
+let pantallaCompra = document.getElementById("pantallaCompra")
+
+//REGISTRO
+let usuario = document.getElementById("usuario")
+let contrasenia = document.getElementById("contrasenia")
+let registrarse = document.getElementById("registrarse")
+
+registrarse.addEventListener("click", ()=>{
+    let infoUsuario = {usuario: usuario.value, contrasenia: contrasenia.value}
+    localStorage.setItem("infoUsuario", JSON.stringify(infoUsuario))
+    alert("Registro exitoso, ya puede iniciar sesion")
+})
+
+//INICIAR SESION
+let usuarioRegistrado = document.getElementById("usuarioRegistrado")
+let contraseniaRegistrado = document.getElementById("contraseniaRegistrado")
+let iniciarSesion = document.getElementById("iniciarSesion")
+
+iniciarSesion.addEventListener("click", () =>{
+    let infoUsuario = JSON.parse(localStorage.getItem("infoUsuario"))
+    if (infoUsuario.usuario == usuarioRegistrado.value && infoUsuario.contrasenia == contraseniaRegistrado.value){
+        login.classList.add("ocultar")
+        pantallaCompra.classList.remove("ocultar")
+    }   else {
+        alert("Datos inconrrectos, intente de nuevo")
+    }
+})
+
+//CERRAR SESION
+let cerrarSesion = document.getElementById("cerrarSesion")
+
+cerrarSesion.addEventListener("click", () =>{
+    login.classList.remove("ocultar")
+    pantallaCompra.classList.add("ocultar")
+})
+
 let carritoDOM = document.getElementById("carrito")
-
-function finalizarCompra(){
-    let mensajeCompra = document.createElement("h3")
-    mensajeCompra.textContent = "¡Muchas gracias por su compra!"
-    document.getElementById("mensajeCompra").appendChild(mensajeCompra)
-    localStorage.removeItem("carrito") 
-    carrito = []
-    renderizarCarrito(carrito)
-
-    setTimeout(() => {
-        mensajeCompra.remove()
-    }, 3000)
-}
 
 let carrito = JSON.parse(localStorage.getItem("carrito")) || []
 renderizarCarrito(carrito)
 
-
+//RENDER PRODUCTOS
 renderizarProductos(productos)
 
 function renderizarProductos(arrayProductos) {
@@ -86,6 +110,7 @@ function renderizarProductos(arrayProductos) {
     })
 }
 
+//AGREGAR PRODUCTOS AL CARRITO
 function agregarProductoAlCarrito(e) { 
     let productoBuscado = productos.find(producto => producto.id === Number(e.target.id))
     let posicionProd = productos.findIndex(producto => producto.id == e.target.id)
@@ -117,6 +142,7 @@ function agregarProductoAlCarrito(e) {
     }
 }
 
+//RENDER CARRITO
 function renderizarCarrito(arrayDeProductos) {
     carritoDOM.innerHTML = ""
     
@@ -152,6 +178,8 @@ function renderizarCarrito(arrayDeProductos) {
         botonesEliminar.forEach(boton => boton.addEventListener("click", eliminarProducto))
     }
 }
+
+//ELIMINAR PRODUCTO DEL CARRITO
 function eliminarProducto(e) {
     let idProducto = Number(e.target.dataset.id)
     let pos = carrito.findIndex(producto => producto.id === idProducto)
@@ -160,6 +188,7 @@ function eliminarProducto(e) {
     renderizarCarrito(carrito)
 }
 
+//BUSCADOR
 let buscador = document.getElementById("buscador")
 buscador.addEventListener("input", filtrar)
 
@@ -179,41 +208,17 @@ function mostrarCarrito() {
 }
 
 
-let login = document.getElementById("login")
-let pantallaCompra = document.getElementById("pantallaCompra")
 
-//REGISTRO
-let usuario = document.getElementById("usuario")
-let contrasenia = document.getElementById("contrasenia")
-let registrarse = document.getElementById("registrarse")
-
-registrarse.addEventListener("click", ()=>{
-    let infoUsuario = {usuario: usuario.value, contrasenia: contrasenia.value}
-    localStorage.setItem("infoUsuario", JSON.stringify(infoUsuario))
-    alert("Registro exitoso, ya puede iniciar sesion")
-})
-
-//INICIAR SESION
-let usuarioRegistrado = document.getElementById("usuarioRegistrado")
-let contraseniaRegistrado = document.getElementById("contraseniaRegistrado")
-let iniciarSesion = document.getElementById("iniciarSesion")
-
-iniciarSesion.addEventListener("click", () =>{
-    let infoUsuario = JSON.parse(localStorage.getItem("infoUsuario"))
-    if (infoUsuario.usuario == usuarioRegistrado.value && infoUsuario.contrasenia == contraseniaRegistrado.value){
-        login.classList.add("ocultar")
-        pantallaCompra.classList.remove("ocultar")
-    }   else {
-        alert("Datos inconrrectos, intente de nuevo")
-    }
-})
-
-//CERRAR SESION
-let cerrarSesion = document.getElementById("cerrarSesion")
-
-cerrarSesion.addEventListener("click", () =>{
-    login.classList.remove("ocultar")
-    pantallaCompra.classList.add("ocultar")
-})
  
+function finalizarCompra(){
+    let mensajeCompra = document.createElement("h3")
+    mensajeCompra.textContent = "¡Muchas gracias por su compra!"
+    document.getElementById("mensajeCompra").appendChild(mensajeCompra)
+    localStorage.removeItem("carrito") 
+    carrito = []
+    renderizarCarrito(carrito)
 
+    setTimeout(() => {
+        mensajeCompra.remove()
+    }, 3000)
+}
