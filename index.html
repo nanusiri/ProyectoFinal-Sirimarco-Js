@@ -15,17 +15,34 @@
         <h1 id="titulo">Dry-Meat</h1>
     </header>
 
-    <div id="mensajeCompra"></div>
+    <div id="login">
+        <h2>Registrarse</h2>
+        <input id="usuario" placeholder="Usuario">
+        <input id="contrasenia" placeholder="Contraseña"> 
+        <button id="registrarse">REGISTRARSE</button>
+    <br>
 
-    <input id="buscador" placeholder="Buscar por nombre de producto">
-    <button id="buscar">Buscar</button>
-    <button id="botonCarrito">Entrar al carrito</button>
+        <h2>Iniciar sesion</h2>
+        <input id="usuarioRegistrado" placeholder="Usuario">
+        <input id="contraseniaRegistrado" placeholder="Contraseña"> 
+        <button id="iniciarSesion">INICIAR SESION</button>
+    </div>
+    <br>
 
-    <div id="agradecimiento"></div>
+    <div class="ocultar" id="pantallaCompra">
+        <button id="cerrarSesion">CERRAR SESION</button>
+        <div id="mensajeCompra"></div>
 
-    <div id="contenedorProductos"></div>
-    
-    <div id="carrito" class="ocultar"></div>
+        <input id="buscador" placeholder="Buscar por nombre de producto">
+        <button id="buscar">Buscar</button>
+        <button id="botonCarrito">Entrar al carrito</button>
+
+        <div id="agradecimiento"></div>
+
+        <div id="contenedorProductos"></div>
+        
+        <div id="carrito" class="ocultar"></div>
+    </div>
     
     <script src="js/script.js"></script>
 </body>

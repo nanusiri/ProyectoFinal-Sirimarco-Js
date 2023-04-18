@@ -179,7 +179,41 @@ function mostrarCarrito() {
 }
 
 
+let login = document.getElementById("login")
+let pantallaCompra = document.getElementById("pantallaCompra")
 
+//REGISTRO
+let usuario = document.getElementById("usuario")
+let contrasenia = document.getElementById("contrasenia")
+let registrarse = document.getElementById("registrarse")
 
+registrarse.addEventListener("click", ()=>{
+    let infoUsuario = {usuario: usuario.value, contrasenia: contrasenia.value}
+    localStorage.setItem("infoUsuario", JSON.stringify(infoUsuario))
+    alert("Registro exitoso, ya puede iniciar sesion")
+})
+
+//INICIAR SESION
+let usuarioRegistrado = document.getElementById("usuarioRegistrado")
+let contraseniaRegistrado = document.getElementById("contraseniaRegistrado")
+let iniciarSesion = document.getElementById("iniciarSesion")
+
+iniciarSesion.addEventListener("click", () =>{
+    let infoUsuario = JSON.parse(localStorage.getItem("infoUsuario"))
+    if (infoUsuario.usuario == usuarioRegistrado.value && infoUsuario.contrasenia == contraseniaRegistrado.value){
+        login.classList.add("ocultar")
+        pantallaCompra.classList.remove("ocultar")
+    }   else {
+        alert("Datos inconrrectos, intente de nuevo")
+    }
+})
+
+//CERRAR SESION
+let cerrarSesion = document.getElementById("cerrarSesion")
+
+cerrarSesion.addEventListener("click", () =>{
+    login.classList.remove("ocultar")
+    pantallaCompra.classList.add("ocultar")
+})
  
 
