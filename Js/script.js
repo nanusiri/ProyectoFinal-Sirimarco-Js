@@ -196,11 +196,24 @@ function eliminarProducto(e) {
 
 //BUSCADOR
 let buscador = document.getElementById("buscador")
-buscador.addEventListener("input", filtrar)
+let botonBuscar = document.getElementById("buscar")
+buscador.addEventListener("keypress", function (e) {
+  if (e.key === 'Enter') {
+    filtrar()
+  }
+})
 
-function filtrar(e) {
-    let arrayFiltrado = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value.toLowerCase()))
+botonBuscar.addEventListener("click", filtrar)
+
+function filtrar() {
+  let arrayFiltrado = productos.filter(producto => producto.nombre.toLowerCase().includes(buscador.value.toLowerCase()))
+  
+  if (arrayFiltrado.length === 0) {
+    let contenedor = document.getElementById("contenedorProductos")
+    contenedor.innerHTML = "<h2>Ups! No se encontraron coincidencias</h2>"
+  } else {
     renderizarProductos(arrayFiltrado)
+  }
 }
 
 
